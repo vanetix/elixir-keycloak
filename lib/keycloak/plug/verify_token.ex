@@ -103,8 +103,21 @@ defmodule Keycloak.Plug.VerifyToken do
     end
   end
 
-  defp signer_key() do
-    case Application.get_env(:keycloak, __MODULE__, []) do
+  @doc """
+  Returns the configured public_key or hmac key used to sign the token
+
+  ## Example
+
+      iex> Keycloak.Plug.VerifyToken.signer_key()
+      %Joken.Signer{jwk: _, jws: _}
+  """
+  @spec signer_key() :: Joken.Signer.t
+  def signer_key() do
+    {config, _} =
+      Application.get_env(:keycloak, __MODULE__, [])
+      |> Keyword.split([:hmac, :public_key])
+
+    case config do
       [hmac: hmac] ->
         hmac
         |> Joken.hs512()
@@ -112,11 +125,16 @@ defmodule Keycloak.Plug.VerifyToken do
         public_key
         |> JWK.from_pem()
         |> Joken.rs256()
-      _ -> nil
+      _ ->
+        raise "No signer configuration present for #{__MODULE__}"
     end
   end
 
-  defp signer_azp() do
+  @doc """
+  Returns the configured signer authorized party to validate
+  """
+  @spec signer_azp() :: String.t
+  def signer_azp() do
     Application.get_env(:keycloak, __MODULE__, [])
     |> Keyword.get(:authorized_party, "keycloak")
   end
