@@ -1,5 +1,7 @@
 # Keycloak
 
+[![Build Status](https://travis-ci.org/vanetix/elixir-keycloak.svg?branch=master)](https://travis-ci.org/vanetix/elixir-keycloak)
+
 Elixir client for working with a Keycloak authorization server.
 
 ## Installation
@@ -15,6 +17,8 @@ end
 
 ## Configuration
 
+### Base
+
 ```elixir
 config :keycloak,
   realm: <REALM>
@@ -23,12 +27,30 @@ config :keycloak,
   client_secret: <CLIENT SECRET>
 ```
 
-## Usage
+### Plugs
 
-Redirect user to authorize endpoint:
+### VerifyToken
 
 ```elixir
-redirect(to: Keycloak.authorize_url!())
+config :keycloak, Keycloak.Plug.VerifyToken,
+  hmac: "<hmac value>",
+  public_key: "<public key>"
+```
+
+## Usage in Phoenix
+
+```elixir
+def login(conn, _) do
+  redirect(conn, external: Keycloak.authorize_url!())
+end
+
+def callback(conn, %{"code" => code}) do
+  %{token: token} = Keycloak.get_token!(code: code)
+
+  conn
+  |> put_session(:token, token)
+  |> redirect(to: "/manage")
+end
 ```
 
 ## License (MIT)

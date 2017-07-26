@@ -1,15 +1,43 @@
 defmodule Keycloak.Service do
+  @moduledoc """
+  Module that handles authorization flow for a client credentials grant
+
+
+  ### Example
+
+      client = Keycloak.Service.get_token!()
+
+      users =
+        case Keycloak.Admin.get(client, "/realms/test-realm/users") do
+          {:ok, %{body: body}} -> body
+          {:error, _} -> []
+        end
+  """
+
   alias OAuth2.Client
 
-  def get_token!(params \\ []) do
-    case get_token() do
-      {:ok, client} -> client
-      {:error, error} -> raise error
-    end
-  end
+  @doc """
+  Get a token for the configured OAuth2 client
 
+  ### Examples
+
+    iex> Keycloak.Service.get_token!()
+    %OAuth2.AccessToken{access_token: "supersecret", expires_at: nil, other_params: %{}, refresh_token: nil, token_type: "Bearer"}
+  """
+  @spec get_token(keyword()) :: {:ok, Client.t} | {:error, Client.t}
   def get_token(params \\ []) do
     Keycloak.Client.new(strategy: OAuth2.Strategy.ClientCredentials)
     |> OAuth2.Client.get_token(params)
+  end
+
+  @doc """
+  Same as `get_token/1` but raises on error
+  """
+  @spec get_token!(keyword()) :: {:ok, Client.t}
+  def get_token!(params \\ []) do
+    case get_token(params) do
+      {:ok, client} -> client
+      {:error, error} -> raise error
+    end
   end
 end

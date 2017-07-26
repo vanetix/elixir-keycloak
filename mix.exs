@@ -5,30 +5,29 @@ defmodule Keycloak.Mixfile do
     [app: :keycloak,
      version: "0.1.0",
      elixir: "~> 1.4",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
+     name: "elixir-keycloak",
+     description: "Library for interacting with a Keycloak authorization server",
+     package: package(),
      deps: deps()]
   end
 
   # Configuration for the OTP application
-  #
-  # Type "mix help compile.app" for more information
   def application do
-    # Specify extra applications you'll use from Erlang/Elixir
     [extra_applications: [:logger, :oauth2]]
   end
 
-  # Dependencies can be Hex packages:
-  #
-  #   {:my_dep, "~> 0.3.0"}
-  #
-  # Or git/path repositories:
-  #
-  #   {:my_dep, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
-  #
-  # Type "mix help deps" for more examples and options
   defp deps do
     [{:joken, "~> 1.4"},
-     {:oauth2, "~> 0.9.0"}]
+     {:oauth2, "~> 0.9.0"},
+     {:plug, "~> 1.4"},
+     {:poison, "~> 3.1"},
+     {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
+     {:ex_doc, "~> 0.16.2", only: :dev}]
+  end
+
+  defp package do
+    [maintainers: ["Matthew McFarland"],
+     licenses: ["MIT"],
+     links: %{"Github" => "https://github.com/vanetix/slack_command"}]
   end
 end
