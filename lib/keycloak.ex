@@ -33,7 +33,7 @@ defmodule Keycloak do
   @doc """
   """
   @spec get_token!(keyword(), keyword()) :: any()
-  def get_token!(params \\ [], headers \\ []) do
+  def get_token!(params \\ [], _headers \\ []) do
     data = Keyword.merge(params, client_secret: Client.new().client_secret)
 
     Client.new()
