@@ -2,7 +2,7 @@ defmodule Keycloak.Admin do
   @moduledoc ~S"""
   This module is responsible for making calls to the Keycloak admin api.
 
-  ## Examples
+  ## Example
 
       client = Keycloak.Client.new(token: "supersecret")
 

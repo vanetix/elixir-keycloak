@@ -3,7 +3,7 @@ defmodule Keycloak.Service do
   Module that handles authorization flow for a client credentials grant
 
 
-  ### Example
+  ## Example
 
       client = Keycloak.Service.get_token!()
 
@@ -19,7 +19,7 @@ defmodule Keycloak.Service do
   @doc """
   Get a token for the configured OAuth2 client
 
-  ### Examples
+  ### Example
 
     iex> Keycloak.Service.get_token!()
     %OAuth2.AccessToken{access_token: "supersecret", expires_at: nil, other_params: %{}, refresh_token: nil, token_type: "Bearer"}

@@ -1,5 +1,8 @@
 defmodule Keycloak.Client do
   @moduledoc """
+  Module resposible for creating a properly configured
+  `OAuth2.Client` for use with the Keycloak configuration.
+
   ## Configuration
 
       config :keycloak,
@@ -11,6 +14,7 @@ defmodule Keycloak.Client do
 
   alias OAuth2.Client
 
+  @spec config() :: keyword()
   defp config() do
     config = Application.get_all_env(:keycloak)
     {realm, config} = Keyword.pop(config, :realm)

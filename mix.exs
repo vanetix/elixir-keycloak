@@ -8,7 +8,9 @@ defmodule Keycloak.Mixfile do
      name: "keycloak",
      description: "Library for interacting with a Keycloak authorization server",
      package: package(),
-     deps: deps()]
+     deps: deps(),
+     docs: [extras: ["README.md"], main: "readme"]
+     source_url: "https://github.com/vanetix/elixir-keycloak"]
   end
 
   # Configuration for the OTP application

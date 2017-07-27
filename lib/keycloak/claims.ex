@@ -4,9 +4,9 @@ defmodule Keycloak.Claims do
   to use these helpers, you **must** have the `VerifyToken` plug in your plug
   pipeline.
 
-  ## Examples
+  ## Example
 
-  #### Phoenix controller
+  ### Phoenix controller
 
       def index(conn, _) do
         sub = Keycloak.Claims.get_claim(conn, "sub")

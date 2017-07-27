@@ -3,13 +3,11 @@ defmodule Keycloak.Plug.VerifyToken do
   Plug for verifying authorization on a per request basis, verifies that a token is set in the
   `Authorization` header.
 
-  ## Configuration
+  ### Configuration
 
-      config :keycloak, Keycloak.Plug.VerifyToken,
-        hmac: "foo"
+      config :keycloak, Keycloak.Plug.VerifyToken, hmac: "foo"
 
-  ## Examples
-
+      # In your plug pipeline
       plug Keycloak.Plug.VerifyToken
   """
 
@@ -24,8 +22,8 @@ defmodule Keycloak.Plug.VerifyToken do
 
   @doc """
   Fetches the `Authorization` header, and verifies the token if present. If a
-  valid token is passed, the decoded `%Joken.Token{}` is assigned as `:token`
-  in the `conn` assigns.
+  valid token is passed, the decoded `%Joken.Token{}` is added as `:token`
+  to the `conn` assigns.
   """
   @spec call(Plug.Conn.t, keyword()) :: Plug.Conn.t
   def call(conn, _) do
@@ -47,9 +45,9 @@ defmodule Keycloak.Plug.VerifyToken do
   end
 
   @doc """
-  Attemps to verify that the passed `token` can be trusted
+  Attemps to verify that the passed `token` can be trusted.
 
-  ## Examples
+  ## Example
 
       iex> verify_token(nil)
       {:error, :not_authenticated}
@@ -80,19 +78,19 @@ defmodule Keycloak.Plug.VerifyToken do
   end
 
   @doc """
-    Fetches the token from the `Authorization` headers array, attempting
-    to match the token in the format `Bearer <token>`.
+  Fetches the token from the `Authorization` headers array, attempting
+  to match the token in the format `Bearer <token>`.
 
-    ### Example
+  ### Example
 
-        iex> fetch_token([])
-        nil
+      iex> fetch_token([])
+      nil
 
-        iex> fetch_token(["abc123"])
-        nil
+      iex> fetch_token(["abc123"])
+      nil
 
-        iex> fetch_token(["Bearer abc123"])
-        "abc123"
+      iex> fetch_token(["Bearer abc123"])
+      "abc123"
   """
   @spec fetch_token([String.t] | []) :: String.t | nil
   def fetch_token([]), do: nil
@@ -104,9 +102,9 @@ defmodule Keycloak.Plug.VerifyToken do
   end
 
   @doc """
-  Returns the configured public_key or hmac key used to sign the token
+  Returns the configured `public_key` or `hmac` key used to sign the token.
 
-  ## Example
+  ### Example
 
       iex> %Joken.Signer{} = signer_key()
       %Joken.Signer{jwk: %{"k" => "YWtiYXI", "kty" => "oct"}, jws: %{"alg" => "HS512"}}
@@ -132,6 +130,7 @@ defmodule Keycloak.Plug.VerifyToken do
 
   @doc """
   Returns the configured signer authorized party to validate
+  against the `azp` token claim.
   """
   @spec signer_azp() :: String.t
   def signer_azp() do

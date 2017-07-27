@@ -3,21 +3,21 @@ defmodule Keycloak do
   An OAuth2.Strategy implementation for authorizing with a
   [Keycloak](http://www.keycloak.org/) server.
 
-  ## Examples
+  ## Example
 
   #### Phoenix controller
 
-        def login(conn, _) do
-          redirect(conn, external: Keycloak.authorize_url!())
-        end
+      def login(conn, _) do
+        redirect(conn, external: Keycloak.authorize_url!())
+      end
 
-        def callback(conn, %{"code" => code}) do
-          %{token: token} = Keycloak.get_token!(code: code)
+      def callback(conn, %{"code" => code}) do
+        %{token: token} = Keycloak.get_token!(code: code)
 
-          conn
-          |> put_session(:token, token)
-          |> redirect(to: "/manage")
-        end
+        conn
+        |> put_session(:token, token)
+        |> redirect(to: "/manage")
+      end
   """
 
   use OAuth2.Strategy
@@ -31,6 +31,8 @@ defmodule Keycloak do
   end
 
   @doc """
+  Creates a `OAuth2.Client` using the keycloak configuration and
+  attempts fetch a access token.
   """
   @spec get_token!(keyword(), keyword()) :: any()
   def get_token!(params \\ [], _headers \\ []) do
@@ -41,6 +43,7 @@ defmodule Keycloak do
   end
 
   @doc """
+  Returns the authorize url for the keycloak client.
   """
   @spec authorize_url(OAuth2.Client.t, keyword()) :: any()
   def authorize_url(client, params) do
@@ -48,6 +51,7 @@ defmodule Keycloak do
   end
 
   @doc """
+  Gets a token given a preconfigured `OAuth2.Client`.
   """
   @spec get_token(OAuth2.Client.t, keyword(), keyword()) :: any()
   def get_token(client, params, headers) do
