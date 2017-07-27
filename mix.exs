@@ -3,13 +3,13 @@ defmodule Keycloak.Mixfile do
 
   def project do
     [app: :keycloak,
-     version: "0.1.0",
+     version: "0.1.1",
      elixir: "~> 1.4",
      name: "keycloak",
      description: "Library for interacting with a Keycloak authorization server",
      package: package(),
      deps: deps(),
-     docs: [extras: ["README.md"], main: "readme"]
+     docs: [extras: ["README.md"], main: "readme"],
      source_url: "https://github.com/vanetix/elixir-keycloak"]
   end
 
