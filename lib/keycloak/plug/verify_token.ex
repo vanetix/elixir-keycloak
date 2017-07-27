@@ -108,8 +108,8 @@ defmodule Keycloak.Plug.VerifyToken do
 
   ## Example
 
-      iex> Keycloak.Plug.VerifyToken.signer_key()
-      %Joken.Signer{jwk: _, jws: _}
+      iex> %Joken.Signer{} = signer_key()
+      %Joken.Signer{jwk: %{"k" => "YWtiYXI", "kty" => "oct"}, jws: %{"alg" => "HS512"}}
   """
   @spec signer_key() :: Joken.Signer.t
   def signer_key() do

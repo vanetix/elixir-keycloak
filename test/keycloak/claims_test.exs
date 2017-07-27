@@ -2,6 +2,8 @@ defmodule Keycloak.ClaimsTest do
   use ExUnit.Case
   use Plug.Test
 
+  doctest Keycloak.Claims
+
   import Keycloak.Claims
 
   def fixture(:token) do
