@@ -3,7 +3,7 @@ defmodule Keycloak.Plug.VerifyToken do
   Plug for verifying authorization on a per request basis, verifies that a token is set in the
   `Authorization` header.
 
-  ### Configuration
+  ### Example Usage
 
       config :keycloak, Keycloak.Plug.VerifyToken, hmac: "foo"
 
