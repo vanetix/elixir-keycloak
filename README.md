@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/vanetix/elixir-keycloak.svg?branch=master)](https://travis-ci.org/vanetix/elixir-keycloak)
 
-Elixir client for working with a Keycloak authorization server.
+Elixir client for working with a Keycloak authorization server. API documentation can be found at https://hexdocs.pm/keycloak/.
 
 ## Installation
 
