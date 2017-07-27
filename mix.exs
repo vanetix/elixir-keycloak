@@ -5,7 +5,7 @@ defmodule Keycloak.Mixfile do
     [app: :keycloak,
      version: "0.1.0",
      elixir: "~> 1.4",
-     name: "elixir-keycloak",
+     name: "keycloak",
      description: "Library for interacting with a Keycloak authorization server",
      package: package(),
      deps: deps()]
@@ -28,6 +28,6 @@ defmodule Keycloak.Mixfile do
   defp package do
     [maintainers: ["Matthew McFarland"],
      licenses: ["MIT"],
-     links: %{"Github" => "https://github.com/vanetix/slack_command"}]
+     links: %{"Github" => "https://github.com/vanetix/elixir-keycloak"}]
   end
 end
