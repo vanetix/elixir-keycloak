@@ -61,7 +61,6 @@ defmodule Keycloak.Plug.VerifyToken do
     joken =
       token
       |> Joken.token()
-      |> Joken.with_validation("azp", &(&1 == signer_azp()), "Invalid azp")
       |> Joken.with_validation("exp", fn(exp) ->
         case DateTime.from_unix(exp) do
           {:ok, dt} -> DateTime.compare(dt, DateTime.utc_now()) == :gt
@@ -126,15 +125,5 @@ defmodule Keycloak.Plug.VerifyToken do
       _ ->
         raise "No signer configuration present for #{__MODULE__}"
     end
-  end
-
-  @doc """
-  Returns the configured signer authorized party to validate
-  against the `azp` token claim.
-  """
-  @spec signer_azp() :: String.t
-  def signer_azp() do
-    Application.get_env(:keycloak, __MODULE__, [])
-    |> Keyword.get(:authorized_party, "keycloak")
   end
 end

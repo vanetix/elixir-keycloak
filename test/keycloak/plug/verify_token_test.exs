@@ -8,12 +8,11 @@ defmodule Keycloak.Plug.VerifyTokenTest do
 
   setup do
     Application.put_env(:keycloak, Keycloak.Plug.VerifyToken,
-                        hmac: "akbar", authorized_party: "test")
+                        hmac: "akbar")
   end
 
   def fixture(:token) do
     Joken.token()
-    |> Joken.with_claim("azp", signer_azp())
     |> Joken.with_claim("sub", "Luke Skywalker")
     |> Joken.sign(signer_key())
     |> Joken.get_compact()
