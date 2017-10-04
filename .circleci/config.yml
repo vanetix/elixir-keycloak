@@ -7,6 +7,8 @@ jobs:
     steps:
       - checkout
 
-      - run: mix deps.get
+      - run: mix local.rebar --force
+      - run: mix local.hex --force
+      - run: mix deps.get --only test
       - run: mix test
       - run: mix credo --mute-exit-status
