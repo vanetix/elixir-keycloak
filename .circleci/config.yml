@@ -1,0 +1,12 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/elixir:1.4
+    steps:
+      - checkout
+
+      - run: mix deps.get
+      - run: mix test
+      - run: mix credo --mute-exit-status
