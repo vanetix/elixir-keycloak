@@ -37,9 +37,9 @@ defmodule Keycloak.Admin do
   Makes an authorized POST request to `url`
   """
   @spec post(Client.t, String.t) :: {atom(), OAuth2.Response.t}
-  def post(%Client{} = client, url) do
+  def post(%Client{} = client, url, body \\ "", headers \\ [], opts \\ []) do
     admin_client(client)
-    |> Client.post(url)
+    |> Client.post(url, body, headers, opts)
   end
 
   @doc """
