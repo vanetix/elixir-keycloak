@@ -41,4 +41,11 @@ defmodule Keycloak.Admin do
     admin_client(client)
     |> Client.post(url)
   end
+
+  @doc """
+  A simple wrapper around the current `admin_client` functionality.
+
+  NOTE: This is a temporary fix for some missing functionality.
+  """
+  def new(client), do: admin_client(client)
 end
