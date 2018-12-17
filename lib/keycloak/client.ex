@@ -21,6 +21,7 @@ defmodule Keycloak.Client do
     {site, config} = Keyword.pop(config, :site)
 
     [strategy: Keycloak,
+     realm: realm,
      site: "#{site}/auth",
      authorize_url: "/realms/#{realm}/protocol/openid-connect/auth",
      token_url: "/realms/#{realm}/protocol/openid-connect/token"]
