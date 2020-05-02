@@ -18,16 +18,15 @@ defmodule Keycloak.Claims do
   """
 
   alias Plug.Conn
-  alias Joken.Token
 
   @doc """
   Pulls given `claim` from the Joken token
   """
-  @spec get_claim(Plug.Conn.t | Joken.Token.t, String.t) :: String.t | nil
-  def get_claim(%Conn{assigns: %{token: token}}, claim),
-    do: get_claim(token, claim)
+  @spec get_claim(Plug.Conn.t | Joken.claims(), String.t) :: String.t | nil
+  def get_claim(%Conn{assigns: %{claims: claims}}, claim),
+    do: get_claim(claims, claim)
 
-  def get_claim(%Token{claims: claims}, claim) do
+  def get_claim(claims, claim) do
     case claims do
       %{^claim => value} -> value
       _ -> nil

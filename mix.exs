@@ -4,7 +4,7 @@ defmodule Keycloak.Mixfile do
   def project do
     [app: :keycloak,
      version: "0.2.2",
-     elixir: "~> 1.4",
+     elixir: "~> 1.6",
      name: "keycloak",
      description: "Library for interacting with a Keycloak authorization server",
      package: package(),
@@ -19,12 +19,12 @@ defmodule Keycloak.Mixfile do
   end
 
   defp deps do
-    [{:joken, "~> 1.4"},
-     {:oauth2, "~> 0.9.0"},
+    [{:joken, "~> 2.0"},
+     {:oauth2, "~> 2.0"},
      {:plug, "~> 1.4"},
-     {:poison, "~> 3.1"},
-     {:credo, "~> 0.8", only: [:dev, :test], runtime: false},
-     {:ex_doc, "~> 0.16.2", only: :dev, runtime: false}]
+     {:poison, "~> 4.0"},
+     {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
+     {:ex_doc, "~> 0.21.3", only: :dev, runtime: false}]
   end
 
   defp package do

@@ -10,6 +10,7 @@ defmodule Keycloak.Plug.VerifyToken do
       # In your plug pipeline
       plug Keycloak.Plug.VerifyToken
   """
+  use Joken.Config
 
   import Plug.Conn
 
@@ -33,9 +34,9 @@ defmodule Keycloak.Plug.VerifyToken do
       |> fetch_token()
 
     case verify_token(token) do
-      {:ok, token} ->
+      {:ok, claims} ->
         conn
-        |> assign(:token, token)
+        |> assign(:claims, claims)
       {:error, message} ->
         conn
         |> put_resp_content_type("application/vnd.api+json")
@@ -44,6 +45,7 @@ defmodule Keycloak.Plug.VerifyToken do
     end
   end
 
+  def token_config(), do: default_claims(default_exp: 60 * 60) # 1 hour
   @doc """
   Attemps to verify that the passed `token` can be trusted.
 
@@ -53,27 +55,12 @@ defmodule Keycloak.Plug.VerifyToken do
       {:error, :not_authenticated}
 
       iex> verify_token("abc123")
-      {:error, "Invalid signature"}
+      {:error, :signature_error}
   """
   @spec verify_token(String.t | nil) :: {atom(), Joken.Token.t | atom()}
   def verify_token(nil), do: {:error, :not_authenticated}
   def verify_token(token) do
-    joken =
-      token
-      |> Joken.token()
-      |> Joken.with_validation("exp", fn(exp) ->
-        case DateTime.from_unix(exp) do
-          {:ok, dt} -> DateTime.compare(dt, DateTime.utc_now()) == :gt
-          {:error, _} -> false
-        end
-      end, "Invalid exp")
-      |> Joken.with_signer(signer_key())
-      |> Joken.verify()
-
-    case joken do
-      %{error: nil} -> {:ok, joken}
-      %{error: message} -> {:error, message}
-    end
+    verify_and_validate(token, signer_key())
   end
 
   @doc """
@@ -106,22 +93,27 @@ defmodule Keycloak.Plug.VerifyToken do
   ### Example
 
       iex> %Joken.Signer{} = signer_key()
-      %Joken.Signer{jwk: %{"k" => "YWtiYXI", "kty" => "oct"}, jws: %{"alg" => "HS512"}}
+      %Joken.Signer{
+              alg: "HS512",
+              jwk: %JOSE.JWK{fields: %{}, keys: :undefined, kty: {:jose_jwk_kty_oct, "akbar"}},
+              jws: %JOSE.JWS{alg: {:jose_jws_alg_hmac, :HS512}, b64: :undefined, fields: %{"typ" => "JWT"}}
+            }
   """
   @spec signer_key() :: Joken.Signer.t
   def signer_key() do
     {config, _} =
-      Application.get_env(:keycloak, __MODULE__, [])
+      :keycloak
+      |> Application.get_env(__MODULE__, [])
       |> Keyword.split([:hmac, :public_key])
 
     case config do
       [hmac: hmac] ->
         hmac
-        |> Joken.hs512()
+        |> (&Joken.Signer.create("HS512", &1)).()
       [public_key: public_key] ->
         public_key
         |> JWK.from_pem()
-        |> Joken.rs256()
+        |> (&Joken.Signer.create("RS256", &1)).()
       _ ->
         raise "No signer configuration present for #{__MODULE__}"
     end
