@@ -29,7 +29,7 @@ defmodule Keycloak.Plug.VerifyTokenTest do
   test "verify_token/1 with invalid token" do
     assert {:error, :not_authenticated} = verify_token(nil)
     assert {:error, :signature_error} = verify_token("abc123")
-    assert {:ok, %{}} = verify_token(fixture(:token))
+    assert {:ok, %{"aud" => "Joken", "iss" => "Joken" }}  = verify_token(fixture(:token))
   end
 
   test "call/2 with valid token" do
@@ -39,7 +39,7 @@ defmodule Keycloak.Plug.VerifyTokenTest do
       |> call(%{})
 
     refute conn.halted
-    assert %Plug.Conn{assigns: %{claims: %{}}} = conn
+    assert %Plug.Conn{assigns: %{claims: %{"aud" => "Joken", "iss" => "Joken"}}} = conn
   end
 
   test "call/2 with invalid token" do
