@@ -22,7 +22,7 @@ defmodule Keycloak.Claims do
   @doc """
   Pulls given `claim` from the Joken token
   """
-  @spec get_claim(Plug.Conn.t | Joken.claims(), String.t) :: String.t | nil
+  @spec get_claim(Plug.Conn.t() | Joken.claims(), String.t()) :: String.t() | nil
   def get_claim(%Conn{assigns: %{claims: claims}}, claim),
     do: get_claim(claims, claim)
 

@@ -45,7 +45,7 @@ defmodule Keycloak do
   @doc """
   Returns the authorize url for the keycloak client.
   """
-  @spec authorize_url(OAuth2.Client.t, keyword()) :: any()
+  @spec authorize_url(OAuth2.Client.t(), keyword()) :: any()
   def authorize_url(client, params) do
     AuthCode.authorize_url(client, params)
   end
@@ -53,7 +53,7 @@ defmodule Keycloak do
   @doc """
   Gets a token given a preconfigured `OAuth2.Client`.
   """
-  @spec get_token(OAuth2.Client.t, keyword(), keyword()) :: any()
+  @spec get_token(OAuth2.Client.t(), keyword(), keyword()) :: any()
   def get_token(client, params, headers) do
     client
     |> OAuth2.Client.put_header("Accept", "application/json")

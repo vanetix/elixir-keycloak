@@ -26,7 +26,7 @@ defmodule Keycloak.Plug.VerifyToken do
   valid token is passed, the decoded `%Joken.Token{}` is added as `:token`
   to the `conn` assigns.
   """
-  @spec call(Plug.Conn.t, keyword()) :: Plug.Conn.t
+  @spec call(Plug.Conn.t(), keyword()) :: Plug.Conn.t()
   def call(conn, _) do
     token =
       conn
@@ -37,6 +37,7 @@ defmodule Keycloak.Plug.VerifyToken do
       {:ok, claims} ->
         conn
         |> assign(:claims, claims)
+
       {:error, message} ->
         conn
         |> put_resp_content_type("application/vnd.api+json")
@@ -45,7 +46,9 @@ defmodule Keycloak.Plug.VerifyToken do
     end
   end
 
-  def token_config(), do: default_claims(default_exp: 60 * 60) # 1 hour
+  # 1 hour
+  def token_config(), do: default_claims(default_exp: 60 * 60)
+
   @doc """
   Attemps to verify that the passed `token` can be trusted.
 
@@ -57,8 +60,9 @@ defmodule Keycloak.Plug.VerifyToken do
       iex> verify_token("abc123")
       {:error, :signature_error}
   """
-  @spec verify_token(String.t | nil) :: {atom(), Joken.Token.t | atom()}
+  @spec verify_token(String.t() | nil) :: {atom(), Joken.Token.t() | atom()}
   def verify_token(nil), do: {:error, :not_authenticated}
+
   def verify_token(token) do
     verify_and_validate(token, signer_key())
   end
@@ -78,8 +82,9 @@ defmodule Keycloak.Plug.VerifyToken do
       iex> fetch_token(["Bearer abc123"])
       "abc123"
   """
-  @spec fetch_token([String.t] | []) :: String.t | nil
+  @spec fetch_token([String.t()] | []) :: String.t() | nil
   def fetch_token([]), do: nil
+
   def fetch_token([token | tail]) do
     case Regex.run(@regex, token) do
       [_, token] -> String.trim(token)
@@ -99,7 +104,7 @@ defmodule Keycloak.Plug.VerifyToken do
               jws: %JOSE.JWS{alg: {:jose_jws_alg_hmac, :HS512}, b64: :undefined, fields: %{"typ" => "JWT"}}
             }
   """
-  @spec signer_key() :: Joken.Signer.t
+  @spec signer_key() :: Joken.Signer.t()
   def signer_key() do
     {config, _} =
       :keycloak
@@ -110,10 +115,12 @@ defmodule Keycloak.Plug.VerifyToken do
       [hmac: hmac] ->
         hmac
         |> (&Joken.Signer.create("HS512", &1)).()
+
       [public_key: public_key] ->
         public_key
         |> JWK.from_pem()
         |> (&Joken.Signer.create("RS256", &1)).()
+
       _ ->
         raise "No signer configuration present for #{__MODULE__}"
     end

@@ -20,12 +20,13 @@ defmodule Keycloak.Client do
     {realm, config} = Keyword.pop(config, :realm)
     {site, config} = Keyword.pop(config, :site)
 
-    [strategy: Keycloak,
-     realm: realm,
-     site: "#{site}/auth",
-     authorize_url: "/realms/#{realm}/protocol/openid-connect/auth",
-     token_url: "/realms/#{realm}/protocol/openid-connect/token",
-     serializers: %{"application/json" => Poison}
+    [
+      strategy: Keycloak,
+      realm: realm,
+      site: "#{site}/auth",
+      authorize_url: "/realms/#{realm}/protocol/openid-connect/auth",
+      token_url: "/realms/#{realm}/protocol/openid-connect/token",
+      serializers: %{"application/json" => Poison}
     ]
     |> Keyword.merge(config)
   end
@@ -34,18 +35,18 @@ defmodule Keycloak.Client do
   Returns a new `OAuth2.Client` ready to make requests to the configured
   Keycloak server.
   """
-  @spec new(keyword()) :: OAuth2.Client.t
-  def new(opts \\ [])  do
+  @spec new(keyword()) :: OAuth2.Client.t()
+  def new(opts \\ []) do
     config()
     |> Keyword.merge(opts)
-    |> Client.new
+    |> Client.new()
   end
 
   @doc """
   Fetches the current user profile from the Keycloak userinfo endpoint. The
   passed `client` must have already been authorized and have a valid access token.
   """
-  @spec me(OAuth2.Client.t) :: {:ok, OAuth2.Response.t} | {:error, String.t}
+  @spec me(OAuth2.Client.t()) :: {:ok, OAuth2.Response.t()} | {:error, String.t()}
   def me(%Client{} = client) do
     realm =
       config()

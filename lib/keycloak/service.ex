@@ -30,7 +30,7 @@ defmodule Keycloak.Service do
       token_type: "Bearer"
     }
   """
-  @spec get_token(keyword()) :: {:ok, Client.t} | {:error, Client.t}
+  @spec get_token(keyword()) :: {:ok, Client.t()} | {:error, Client.t()}
   def get_token(params \\ []) do
     Keycloak.Client.new(strategy: OAuth2.Strategy.ClientCredentials)
     |> OAuth2.Client.get_token(params)
@@ -39,7 +39,7 @@ defmodule Keycloak.Service do
   @doc """
   Same as `get_token/1` but raises on error
   """
-  @spec get_token!(keyword()) :: {:ok, Client.t}
+  @spec get_token!(keyword()) :: {:ok, Client.t()}
   def get_token!(params \\ []) do
     Keycloak.Client.new(strategy: OAuth2.Strategy.ClientCredentials)
     |> OAuth2.Client.get_token!(params)

@@ -8,8 +8,7 @@ defmodule Keycloak.Plug.VerifyTokenTest do
   doctest Keycloak.Plug.VerifyToken
 
   setup do
-    Application.put_env(:keycloak, Keycloak.Plug.VerifyToken,
-                        hmac: "akbar")
+    Application.put_env(:keycloak, Keycloak.Plug.VerifyToken, hmac: "akbar")
   end
 
   def fixture(:token) do
@@ -29,7 +28,7 @@ defmodule Keycloak.Plug.VerifyTokenTest do
   test "verify_token/1 with invalid token" do
     assert {:error, :not_authenticated} = verify_token(nil)
     assert {:error, :signature_error} = verify_token("abc123")
-    assert {:ok, %{"aud" => "Joken", "iss" => "Joken" }}  = verify_token(fixture(:token))
+    assert {:ok, %{"aud" => "Joken", "iss" => "Joken"}} = verify_token(fixture(:token))
   end
 
   test "call/2 with valid token" do
