@@ -24,7 +24,9 @@ defmodule Keycloak.Mixfile do
      {:plug, "~> 1.4"},
      {:poison, "~> 4.0"},
      {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
-     {:ex_doc, "~> 0.21.3", only: :dev, runtime: false}]
+     {:ex_doc, "~> 0.21.3", only: :dev, runtime: false},
+     {:rexbug, "~> 1.0", only: :dev, runtime: false}
+     ]
   end
 
   defp package do
