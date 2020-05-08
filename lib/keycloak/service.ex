@@ -22,9 +22,15 @@ defmodule Keycloak.Service do
   ### Example
 
     iex> Keycloak.Service.get_token!()
-    %OAuth2.AccessToken{access_token: "supersecret", expires_at: nil, other_params: %{}, refresh_token: nil, token_type: "Bearer"}
+    %OAuth2.Client{
+      token: %OAuth2.AccessToken{},
+      expires_at: nil,
+      other_params: %{},
+      refresh_token: nil,
+      token_type: "Bearer"
+    }
   """
-  @spec get_token(keyword()) :: {:ok, Client.t} | {:error, Client.t}
+  @spec get_token(keyword()) :: {:ok, Client.t()} | {:error, Client.t()}
   def get_token(params \\ []) do
     Keycloak.Client.new(strategy: OAuth2.Strategy.ClientCredentials)
     |> OAuth2.Client.get_token(params)
@@ -33,11 +39,9 @@ defmodule Keycloak.Service do
   @doc """
   Same as `get_token/1` but raises on error
   """
-  @spec get_token!(keyword()) :: {:ok, Client.t}
+  @spec get_token!(keyword()) :: {:ok, Client.t()}
   def get_token!(params \\ []) do
-    case get_token(params) do
-      {:ok, client} -> client
-      {:error, error} -> raise error
-    end
+    Keycloak.Client.new(strategy: OAuth2.Strategy.ClientCredentials)
+    |> OAuth2.Client.get_token!(params)
   end
 end

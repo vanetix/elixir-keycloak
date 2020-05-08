@@ -3,19 +3,18 @@ defmodule Keycloak.Plug.VerifyTokenTest do
   use Plug.Test
 
   import Keycloak.Plug.VerifyToken
+  import Joken.Config
 
   doctest Keycloak.Plug.VerifyToken
 
   setup do
-    Application.put_env(:keycloak, Keycloak.Plug.VerifyToken,
-                        hmac: "akbar")
+    Application.put_env(:keycloak, Keycloak.Plug.VerifyToken, hmac: "akbar")
   end
 
   def fixture(:token) do
-    Joken.token()
-    |> Joken.with_claim("sub", "Luke Skywalker")
-    |> Joken.sign(signer_key())
-    |> Joken.get_compact()
+    default_claims()
+    |> add_claim("sub", "Luke Skywalker")
+    |> Joken.generate_and_sign!(%{}, Keycloak.Plug.VerifyToken.signer_key())
   end
 
   test "fetch_token/1" do
@@ -28,8 +27,8 @@ defmodule Keycloak.Plug.VerifyTokenTest do
 
   test "verify_token/1 with invalid token" do
     assert {:error, :not_authenticated} = verify_token(nil)
-    assert {:error, "Invalid signature"} = verify_token("abc123")
-    assert {:ok, %Joken.Token{}} = verify_token(fixture(:token))
+    assert {:error, :signature_error} = verify_token("abc123")
+    assert {:ok, %{"aud" => "Joken", "iss" => "Joken"}} = verify_token(fixture(:token))
   end
 
   test "call/2 with valid token" do
@@ -39,7 +38,7 @@ defmodule Keycloak.Plug.VerifyTokenTest do
       |> call(%{})
 
     refute conn.halted
-    assert %Plug.Conn{assigns: %{token: %Joken.Token{}}} = conn
+    assert %Plug.Conn{assigns: %{claims: %{"aud" => "Joken", "iss" => "Joken"}}} = conn
   end
 
   test "call/2 with invalid token" do

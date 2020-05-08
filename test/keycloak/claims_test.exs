@@ -6,13 +6,13 @@ defmodule Keycloak.ClaimsTest do
 
   import Keycloak.Claims
 
-  def fixture(:token) do
-    %Joken.Token{claims: %{"test" => "abc123"}}
+  def fixture(:claims) do
+    %{"test" => "abc123"}
   end
 
   def fixture(:conn) do
     conn(:get, "/")
-    |> assign(:token, fixture(:token))
+    |> assign(:claims, fixture(:claims))
   end
 
   test "get_claim/2 with %Plug.Conn{}" do
@@ -21,7 +21,7 @@ defmodule Keycloak.ClaimsTest do
   end
 
   test "get_claim/2 with %Token{}" do
-    assert get_claim(fixture(:token), "test") == "abc123"
-    assert get_claim(fixture(:token), "invalid") == nil
+    assert get_claim(fixture(:claims), "test") == "abc123"
+    assert get_claim(fixture(:claims), "invalid") == nil
   end
 end
