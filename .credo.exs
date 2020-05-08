@@ -10,6 +10,8 @@
         excluded: []
       },
       checks: [
+        {Credo.Check.Refactor.MapInto, false},
+        {Credo.Check.Warning.LazyLogging, false},
         {Credo.Check.Consistency.ExceptionNames},
         {Credo.Check.Consistency.LineEndings},
         {Credo.Check.Consistency.ParameterPatternMatching},
@@ -24,7 +26,7 @@
 
         {Credo.Check.Readability.FunctionNames},
         {Credo.Check.Readability.LargeNumbers},
-        {Credo.Check.Readability.MaxLineLength, priority: :normal, max_length: 80},
+        {Credo.Check.Readability.MaxLineLength, priority: :normal, max_length: 100},
         {Credo.Check.Readability.ModuleAttributeNames},
         {Credo.Check.Readability.ModuleDoc},
         {Credo.Check.Readability.ModuleNames},
@@ -49,13 +51,12 @@
         {Credo.Check.Refactor.NegatedConditionsInUnless},
         {Credo.Check.Refactor.NegatedConditionsWithElse},
         {Credo.Check.Refactor.Nesting},
-        {Credo.Check.Refactor.PipeChainStart},
+        # {Credo.Check.Refactor.PipeChainStart},
         {Credo.Check.Refactor.UnlessWithElse},
 
         {Credo.Check.Warning.BoolOperationOnSameValues},
         {Credo.Check.Warning.IExPry},
         {Credo.Check.Warning.IoInspect},
-        {Credo.Check.Warning.LazyLogging},
         {Credo.Check.Warning.OperationOnSameValues},
         {Credo.Check.Warning.OperationWithConstantResult},
         {Credo.Check.Warning.UnusedEnumOperation},
