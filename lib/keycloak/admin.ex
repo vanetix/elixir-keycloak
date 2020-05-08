@@ -22,6 +22,8 @@ defmodule Keycloak.Admin do
   @type headers() :: OAuth2.Client.headers()
   @type body() :: OAuth2.Client.body()
 
+  @default_headers [{"content-type", "application/json"}]
+
   @spec admin_client(Client.t()) :: Client.t()
   defp admin_client(%Client{site: base} = client) do
     %{client | site: "#{base}/admin"}
@@ -49,7 +51,7 @@ defmodule Keycloak.Admin do
         url,
         body \\ "",
         params \\ [],
-        headers \\ [{"content-type", "application/json"}],
+        headers \\ @default_headers,
         opts \\ []
       ) do
     opts = Keyword.update(opts, :params, params, &Keyword.merge/2)
@@ -68,7 +70,7 @@ defmodule Keycloak.Admin do
         url,
         body \\ "",
         params \\ [],
-        headers \\ [{"content-type", "application/json"}],
+        headers \\ @default_headers,
         opts \\ []
       ) do
     opts = Keyword.update(opts, :params, params, &Keyword.merge/2)
@@ -87,7 +89,7 @@ defmodule Keycloak.Admin do
         url,
         body \\ "",
         params \\ [],
-        headers \\ [{"content-type", "application/json"}],
+        headers \\ @default_headers,
         opts \\ []
       ) do
     opts = Keyword.update(opts, :params, params, &Keyword.merge/2)
