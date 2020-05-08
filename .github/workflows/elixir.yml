@@ -1,0 +1,29 @@
+name: Verify
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup elixir
+      uses: actions/setup-elixir@v1
+      with:
+        elixir-version: 1.10.3
+        otp-version: 22.3.3
+    - name: Install Dependencies
+      run: mix deps.get
+    - name: Compile Dependencies
+      run: mix deps.compile
+    - name: Tests
+      run: mix test
+    - name: Format
+      run: mix format --check-formatted
+    - name: Credo
+      run: mix credo --mute-exit-status
