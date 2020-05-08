@@ -1,6 +1,6 @@
 # Keycloak
 
-[![CircleCI](https://circleci.com/gh/vanetix/elixir-keycloak.svg?style=svg)](https://circleci.com/gh/vanetix/elixir-keycloak)
+![CI](https://github.com/vanetix/elixir-keycloak/workflows/Verify/badge.svg)
 
 Elixir client for working with a Keycloak authorization server. API documentation can be found at https://hexdocs.pm/keycloak/.
 
