@@ -4,7 +4,7 @@ defmodule Keycloak.Mixfile do
   def project do
     [
       app: :keycloak,
-      version: "0.2.2",
+      version: "1.0.0",
       elixir: "~> 1.6",
       name: "keycloak",
       description: "Library for interacting with a Keycloak authorization server",
