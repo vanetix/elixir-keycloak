@@ -40,7 +40,7 @@ defmodule Keycloak.Service do
   @doc """
   Same as `get_token/1` but raises on error
   """
-  @spec get_token!(keyword()) :: {:ok, Client.t()}
+  @spec get_token!(keyword()) :: Client.t()
   def get_token!(params \\ []) do
     Keyword.merge(params, strategy: OAuth2.Strategy.ClientCredentials)
     |> Keycloak.Client.new()
