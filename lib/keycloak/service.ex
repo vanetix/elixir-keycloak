@@ -32,7 +32,8 @@ defmodule Keycloak.Service do
   """
   @spec get_token(keyword()) :: {:ok, Client.t()} | {:error, Client.t()}
   def get_token(params \\ []) do
-    Keycloak.Client.new(strategy: OAuth2.Strategy.ClientCredentials)
+    Keyword.merge(params, strategy: OAuth2.Strategy.ClientCredentials)
+    |> Keycloak.Client.new()
     |> OAuth2.Client.get_token(params)
   end
 
@@ -41,7 +42,8 @@ defmodule Keycloak.Service do
   """
   @spec get_token!(keyword()) :: {:ok, Client.t()}
   def get_token!(params \\ []) do
-    Keycloak.Client.new(strategy: OAuth2.Strategy.ClientCredentials)
+    Keyword.merge(params, strategy: OAuth2.Strategy.ClientCredentials)
+    |> Keycloak.Client.new()
     |> OAuth2.Client.get_token!(params)
   end
 end
