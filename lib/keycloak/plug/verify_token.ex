@@ -41,7 +41,7 @@ defmodule Keycloak.Plug.VerifyToken do
       {:error, message} ->
         conn
         |> put_resp_content_type("application/vnd.api+json")
-        |> send_resp(401, Poison.encode!(%{error: message}))
+        |> send_resp(401, Keycloak.json_library().encode!(%{error: message}))
         |> halt()
     end
   end

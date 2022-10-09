@@ -26,7 +26,7 @@ defmodule Keycloak.Client do
       site: "#{site}/auth",
       authorize_url: "/realms/#{realm}/protocol/openid-connect/auth",
       token_url: "/realms/#{realm}/protocol/openid-connect/token",
-      serializers: %{"application/json" => Poison}
+      serializers: %{"application/json" => Keycloak.json_library()}
     ]
     |> Keyword.merge(config)
   end

@@ -21,11 +21,12 @@ defmodule Keycloak.Mixfile do
   end
 
   defp deps do
+    has_specific_json_library? = nil != Application.get_env(:keycloak, :json_library)
     [
       {:joken, "~> 2.0"},
       {:oauth2, "~> 2.0"},
       {:plug, "~> 1.4"},
-      {:poison, "~> 4.0"},
+      {:poison, "~> 4.0", optional: has_specific_json_library?},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.26", only: :dev, runtime: false},
       {:rexbug, "~> 1.0", only: :dev, runtime: false}
