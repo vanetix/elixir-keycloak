@@ -23,7 +23,7 @@ defmodule Keycloak.Client do
     [
       strategy: Keycloak,
       realm: realm,
-      site: "#{site}/auth",
+      site: site,
       authorize_url: "/realms/#{realm}/protocol/openid-connect/auth",
       token_url: "/realms/#{realm}/protocol/openid-connect/token",
       serializers: %{"application/json" => Poison}
