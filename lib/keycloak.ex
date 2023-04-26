@@ -59,4 +59,16 @@ defmodule Keycloak do
     |> OAuth2.Client.put_header("Accept", "application/json")
     |> AuthCode.get_token(params, headers)
   end
+
+
+  @doc """
+  Returns the configured JSON encoding library for Keycloak.
+  To customize the JSON library, including the following
+  in your `config/config.exs`:
+      config :keycloak, :json_library, Jason
+  """
+  def json_library do
+    Application.get_env(:keycloak, :json_library, Poison)
+  end
+
 end
