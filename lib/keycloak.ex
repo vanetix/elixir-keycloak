@@ -33,6 +33,12 @@ defmodule Keycloak do
   @doc """
   Creates a `OAuth2.Client` using the keycloak configuration and
   attempts fetch a access token.
+
+  ## Example
+  Get token based on client credentials:
+
+    get_token!(grant_type: "client_credentials", code: "")
+
   """
   @spec get_token!(keyword(), keyword()) :: any()
   def get_token!(params \\ [], _headers \\ []) do
